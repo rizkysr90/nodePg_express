@@ -45,7 +45,10 @@ class Migrations {
          
             this.client.connect();
             return this.client
-            .query(query)
+            .query(`DROP DATABASE IF EXISTS ${name};`)
+            .then(() => {
+              return this.client.query(query);
+            })
             .then((res) => {
                 if (res) {
                     console.log(`SUCCESS CREATE DATABASE ${name}`);
@@ -110,7 +113,7 @@ function startMigrating(){
         name : 'customer_accounts',
         query :`CREATE TABLE customer_accounts (
           customer_account_id bigserial PRIMARY KEY,
-          email text NOT NULL,
+          email text NOT NULL UNIQUE,
           password varchar(255) NOT NULL ,
           created_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
           updated_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP);`
