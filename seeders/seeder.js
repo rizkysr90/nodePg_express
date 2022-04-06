@@ -74,8 +74,8 @@ function startSeed(){
     const insertCustomerAcc = {
         name : 'customer_accounts',
         query : {
-          text : 'INSERT INTO customer_accounts (customer_account_id,email,password) VALUES ($1, $2, $3)',
-          values : [1,'rizkyganteng@gmail.com','adaganteng123'],
+          text : 'INSERT INTO customer_accounts (email,password) VALUES ($1, $2)',
+          values : ['rizkyganteng@gmail.com','adaganteng123'],
         }
     }
     db.insertData(insertCustomerAcc.name,insertCustomerAcc.query)

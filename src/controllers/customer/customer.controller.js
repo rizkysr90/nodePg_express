@@ -3,7 +3,7 @@ const customerService = require('../../service/customer/customer.service');
 async function getAll(req,res,next) {
     try {
         const result = await customerService.getAll();
-        res.status(200).send(result);
+        res.status(result.code).send(result);
     } catch(err) {
         next(err);
     }
@@ -11,13 +11,40 @@ async function getAll(req,res,next) {
 async function create(req,res,next) {
     try {
         const result = await customerService.create(req.body);
-        res.status(result.code).send(result);
+        res.status(result.code).json(result);
     } catch (err) {
         next(err)
+    }
+}
+async function update(req,res,next) {
+    try {
+        const result = await customerService.update(req.body,req.params);
+        res.status(result.code).json(result);
+    } catch (err) {
+        next(err);
+    }
+}
+async function getById(req,res,next) {
+    try {
+        const result = await customerService.getById(req.params);
+        res.status(result.code).json(result);
+    } catch (err) {
+        next(err);
+    }
+}
+async function remove(req,res,next) {
+    try {
+        const result = await customerService.remove(req.params);
+        res.status(result.code).json(result);
+    } catch (err) {
+        next(err);
     }
 }
 
 module.exports = {
     getAll,
-    create
+    create,
+    update,
+    getById,
+    remove
 }

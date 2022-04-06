@@ -114,7 +114,7 @@ function startMigrating(){
         query :`CREATE TABLE customer_accounts (
           customer_account_id bigserial PRIMARY KEY,
           email text NOT NULL UNIQUE,
-          password varchar(255) NOT NULL ,
+          password varchar(255) NOT NULL,
           created_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
           updated_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP);`
       }
@@ -126,9 +126,9 @@ function startMigrating(){
           name : 'profiles',
           query :`CREATE TABLE profiles (
             profile_id BIGSERIAL PRIMARY KEY,
-            fullname VARCHAR(255) NOT NULL,
-            phone  VARCHAR(50) NOT NULL,
-            address TEXT NOT NULL,
+            fullname VARCHAR(255),
+            phone  VARCHAR(50),
+            address TEXT,
             customer_account_id integer NOT NULL REFERENCES customer_accounts (customer_account_id),
             created_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
