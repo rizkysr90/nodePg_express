@@ -137,18 +137,6 @@ function startMigrating(){
         return db.createTable(createTableProfiles.name,createTableProfiles.query);
       })
       .then(() => {
-        // Create Table Orders
-        const createTableOrders = {
-          name : 'orders',
-          query :`CREATE TABLE orders (
-            order_id bigserial PRIMARY KEY,
-            customer_account_id integer NOT NULL REFERENCES customer_accounts (customer_account_id),
-            created_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            updated_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP);`
-        }
-        return db.createTable(createTableOrders.name,createTableOrders.query);
-      })
-      .then(() => {
         // Create Table Products
         const createTableProducts = {
           name : 'products',
@@ -164,18 +152,17 @@ function startMigrating(){
       })
       .then(() => {
         // Create Table Orders
-        const createTableOrderDetails = {
-          name : 'order_details',
-          query :`CREATE TABLE order_details (
-            order_id integer NOT NULL REFERENCES orders (order_id),
-            product_id integer NOT NULL REFERENCES products (product_id),
+        const createTableOrders = {
+          name : 'orders',
+          query :`CREATE TABLE orders (
+            order_id bigserial PRIMARY KEY,
             quantity integer NOT NULL,
-            price integer NOT NULL,
+            customer_account_id integer NOT NULL REFERENCES customer_accounts (customer_account_id),
+            product_id integer NOT NULL REFERENCES products (product_id),
             created_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            updated_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (order_id,product_id));`
+            updated_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP);`
         }
-        return db.createTable(createTableOrderDetails.name,createTableOrderDetails.query);
+        return db.createTable(createTableOrders.name,createTableOrders.query);
       })
       .then(() => {
           console.log('Already Done');

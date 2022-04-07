@@ -1,8 +1,17 @@
 const db = require('./../db/db.service');
 const productValidator = require('./../../validators/product/product.validator');
 
-async function getAll() {
-    const q = `SELECT * FROM products ORDER BY product_id ASC`;
+async function getAll(req) {
+    let { page, row } = req.query;
+    if (page === undefined || page === "") {
+        page = 1;
+    }
+    if (row === undefined || row === "") {
+        row = 5;
+    }
+    page = ((page - 1) * row);
+    
+    const q = `SELECT * FROM products ORDER BY product_id ASC LIMIT ${row} OFFSET ${page}`;
     const rows = await db.query(q).then((res) => res.rows);
     return {
         code : 200,
@@ -19,7 +28,6 @@ async function create(reqBody) {
         values : [`${name}`,`${price}`,`${stock}`],
     }
     const added = await db.query(q1);
-    console.log(added);
     return {
         code : 201,
         message : 'Data berhasil ditambahkan',
@@ -89,9 +97,29 @@ async function remove(reqParams) {
         data : getData.rows[0]
     }
 }
+async function getById(reqParams) {
+    const {product_id} = reqParams;
+    // Get data
+    const q1 = {
+        text : 'SELECT * FROM products WHERE product_id = ($1)',
+        values : [`${product_id}`]
+    }
+    const getData = await db.query(q1);
+    if (getData.rowCount === 0) {
+        let err = new Error(`Data Produk dengan Id ${product_id} tidak ditemukan`);
+        err.statusCode = 404;
+        throw err;
+    }
+    return {
+        code : 200,
+        message : 'Sukses mendapatkan data',
+        data : getData.rows[0]
+    }
+}
 module.exports = {
     getAll,
     create,
     update,
-    remove
+    remove,
+    getById
 }

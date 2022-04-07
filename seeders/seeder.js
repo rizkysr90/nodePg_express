@@ -90,35 +90,26 @@ function startSeed(){
           return db.insertData(insertProfiles.name,insertProfiles.query);
     })
     .then(() => {
+      const insertProducts = {
+          name : 'products',
+          query : {
+            text : 'INSERT INTO products (name,price,stock) VALUES ($1,$2,$3)',
+            values : ['Kaos Unik',50000,25],
+          }
+        }
+        return db.insertData(insertProducts.name,insertProducts.query);
+  })
+    .then(() => {
         const insertOrders = {
             name : 'orders',
             query : {
-              text : 'INSERT INTO orders (customer_account_id) VALUES ($1)',
-              values : [1],
+              text : 'INSERT INTO orders (customer_account_id,product_id,quantity) VALUES ($1,$2,$3)',
+              values : [1,1,1],
             }
           }
           return db.insertData(insertOrders.name,insertOrders.query);
     })
-    .then(() => {
-        const insertProducts = {
-            name : 'products',
-            query : {
-              text : 'INSERT INTO products (name,price,stock) VALUES ($1,$2,$3)',
-              values : ['Kaos Unik',50000,25],
-            }
-          }
-          return db.insertData(insertProducts.name,insertProducts.query);
-    })
-    .then(() => {
-        const insertOrderDetails = {
-            name : 'order_details',
-            query : {
-              text : 'INSERT INTO order_details (order_id,product_id,quantity,price) VALUES ($1,$2,$3,$4)',
-              values : [1,1,2,100000],
-            }
-          }
-          return db.insertData(insertOrderDetails.name,insertOrderDetails.query);
-    })
+    
     .then(() => {
         console.log('Finish');
     })

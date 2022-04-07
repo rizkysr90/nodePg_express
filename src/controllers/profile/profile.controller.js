@@ -3,7 +3,7 @@ const router = express.Router();
 const profileService = require('./../../service/profile/profile.service');
 async function getAll(req,res,next) {
     try {
-        const result = await profileService.getAll();
+        const result = await profileService.getAll(req);
         res.status(result.code).json(result);
     } catch(err){
         next(err);
@@ -17,7 +17,16 @@ async function update(req,res,next) {
         next(err);
     }
 }
+async function getById(req,res,next) {
+    try {
+        const result = await profileService.getById(req.params);
+        res.status(result.code).json(result);
+    } catch(err) {
+        next(err);
+    }
+}
 module.exports = {
     getAll,
-    update
+    update,
+    getById
 }

@@ -6,5 +6,6 @@ router.route('/')
     .get(profileController.getAll)
 router.route('/:customer_account_id')
     .put(profileController.update)
+    .get(profileController.getById)
 
 module.exports = router;

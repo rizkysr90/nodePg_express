@@ -1,8 +1,19 @@
 const db = require('./../db/db.service');
 const customerValidator = require('./../../validators/customer/customer.validator');
 
-async function getAll() {
-    const q = `SELECT * FROM customer_accounts ORDER BY customer_account_id ASC`;
+async function getAll(req) {
+    let { page, row } = req.query;
+    if (page === undefined || page === "") {
+        page = 1;
+    }
+    if (row === undefined || row === "") {
+        row = 5;
+    }
+    console.log(page,row);
+
+
+    page = ((page - 1) * row);
+    const q = `SELECT * FROM customer_accounts ORDER BY customer_account_id ASC LIMIT ${row} OFFSET ${page}`;
     const rows = await db.query(q).then((res) => res.rows);
     return {
         code : 200,

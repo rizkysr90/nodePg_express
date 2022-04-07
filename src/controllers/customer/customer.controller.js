@@ -2,7 +2,7 @@ const customerService = require('../../service/customer/customer.service');
 
 async function getAll(req,res,next) {
     try {
-        const result = await customerService.getAll();
+        const result = await customerService.getAll(req);
         res.status(result.code).send(result);
     } catch(err) {
         next(err);

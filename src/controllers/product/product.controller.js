@@ -2,7 +2,7 @@ const productService = require('./../../service/product/product.service');
 
 async function getAll(req,res,next) {
     try {
-        const result = await productService.getAll();
+        const result = await productService.getAll(req);
         res.status(result.code).json(result);
     } catch(err) {
         next(err);
@@ -32,11 +32,20 @@ async function remove(req,res,next) {
         next(err);
     }
 }
+async function getById(req,res,next) {
+    try {
+        const result = await productService.getById(req.params);
+        res.status(result.code).json(result);
+    } catch (err) {
+        next(err);
+    }
+}
 
 
 module.exports = {
     getAll,
     create,
     update,
-    remove
+    remove,
+    getById
 }
